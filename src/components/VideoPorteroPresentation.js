@@ -1,3 +1,5 @@
+import React from 'react'
+
 /**
  * Presentational component. Renders the form.
  */
@@ -25,7 +27,14 @@ export const VideoPorteroPresentation = (props) => {
     const Providers = props.providers.map((provider, index) => {
         return (
             <div className="provider" key={`provider-${index}`}>
-                <input type="radio" name="providers-radio" value={`choice-${index}`} id={`choice-${index}`} onChange={ handleSubmission }/>
+                <div className="control">
+                    <input  className="input"
+                            id={`choice-${index}`} 
+                            name="providers-radio" 
+                            onChange={ handleSubmission }
+                            type="radio" 
+                            value={`choice-${index}`}/>
+                </div>
                 <label htmlFor={`choice-${index}`}>{provider}</label>
             </div>   
         )
@@ -35,16 +44,25 @@ export const VideoPorteroPresentation = (props) => {
         <div id="wrapper">
 
             <form id="videoportero" className="form">
-                <fieldset className="fieldset">
+                <fieldset className="field">
+                    <label className="label">Name</label>
+                    <div className="control">
+                        <input className="input" type="text" placeholder="Text input" />
+                    </div>
+                </fieldset>
+
+                <fieldset className="field providers">
                     {Providers}
                 </fieldset>
-                <fieldset className="fieldset">
+                <fieldset className="field">
                     <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
                     <label htmlFor="freeHands">Manos libres</label>
+                    <p className="help">¿Desea la versión manos libres?</p>
                 </fieldset>
-                <fieldset className="fieldset">
+                <fieldset className="field">
                     <input name="keys" type="text" onChange={ handleSubmission } />
                     <label htmlFor="keys">Llaves de proximidad</label>
+                    <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
             </form>
             <span className="message">

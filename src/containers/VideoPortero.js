@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { VideoPorteroPresentation } from '../components/VideoPorteroPresentation'
 
-const VECINOS = 18
+const NEIGHBOURS = 18
 
 const PROVIDERS_FEES = {
     DatesSL: {
@@ -27,21 +27,28 @@ const PROVIDERS_FEES = {
 const PROVIDERS = Object.keys(PROVIDERS_FEES)
 
 const iva = (n) => (n*1.21) 
-const reparto = (n) => (n/VECINOS)
+const reparto = (n) => (n/NEIGHBOURS)
 
 export class VideoPorteroContainer extends Component {
     state = {
-        keys: 0,            //  number of proximity keys
-        provider: null,       
-        proximity: false,
+        //keys: 0,            //  number of proximity keys
+        //provider: null,       
+        //proximity: false,
         total: 0,
     }
 
 
     _updateState = (data) => {
         const provider = data.provider
-        console.log("Selected provider: ", PROVIDERS[provider])
+        // console.log("Selected provider: ", PROVIDERS[provider])
         this.setState( { provider: PROVIDERS[provider] })
+
+        // CASES
+        // Dates SL
+        // Dates SL + proximidad
+        // Dates SL + proximidad + 2 llaves...
+        // Dates SL + proximidad + 3 llaves...
+        // Dates SL + manos libres 
 
         switch(parseInt(provider)){
             case 0: // Dates SL
@@ -60,7 +67,6 @@ export class VideoPorteroContainer extends Component {
     }
 
     render(){
-        console.log("render", this.state)
         return(
             <div>
                 <VideoPorteroPresentation 
@@ -68,7 +74,6 @@ export class VideoPorteroContainer extends Component {
                     providers={PROVIDERS} 
                     total = { this.state.total }/>
             </div>
-            
         )
     }
 
