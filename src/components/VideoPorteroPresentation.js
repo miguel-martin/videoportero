@@ -12,11 +12,12 @@ export const VideoPorteroPresentation = (props) => {
                                     : null
 
         const hasHandFree = document.querySelector('input[name="freeHands"]').checked 
-                            
+        const hasHandFreeDecor = document.querySelector('input[name="freeHandsDecor"]').checked            
         const keyNumber = document.querySelector('input[name="keys"]').value
 
         const data = { 
             hasHandFree,
+            hasHandFreeDecor,
             keyNumber,
             provider
         }
@@ -57,6 +58,14 @@ export const VideoPorteroPresentation = (props) => {
                     <label htmlFor="freeHands">Manos libres</label>
                     <p className="flex-basis-100 help">¿Desea versión manos libres?</p>
                 </fieldset>
+                <fieldset className="field" style={{ display: props.showHandsFreeDecor ? 'block' : 'none' }}>
+                    <input checked={props.handsFreeDecorChecked} 
+                            name="freeHandsDecor" 
+                            onChange={ handleSubmission } 
+                            type="checkbox" />
+                    <label htmlFor="freeHandsDecor">Embellecedor</label>
+                    <p className="flex-basis-100 help">¿Desea marco embellecedor?</p>
+                </fieldset>
                 <fieldset className="field">
                     <input id="keys" 
                             name="keys" 
@@ -68,6 +77,7 @@ export const VideoPorteroPresentation = (props) => {
                     <label htmlFor="keys">Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
+                
             </form>
             <span className={`message notification is-light ${showPrices ? 'is-success' : 'is-warning'}`}>
                 <h3 className="text-3">

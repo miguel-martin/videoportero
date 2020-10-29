@@ -38,6 +38,7 @@ export class VideoPorteroContainer extends Component {
     state = {
         keyNumber: 0,
         isHandFreeChecked: false,
+        isHandFreeDecorChecked: false,
         totalCom: 0,
         extraPerNeighbour: 0,
         totalPerNeighbour: 0,
@@ -56,6 +57,7 @@ export class VideoPorteroContainer extends Component {
             console.error('Invalid provider, or provider not selected!')
             this.setState({
                 isHandFreeChecked: data.hasHandFree,
+                isHandFreeDecorChecked: data.hasHandFreeDecor || PROVIDERS[provider] !== 'Abatronic',
                 keyNumber: keys
             })
             console.log(this.state)
@@ -66,9 +68,12 @@ export class VideoPorteroContainer extends Component {
         const handsFreeCost = data.hasHandFree 
                                 ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree 
                                 : 0
+        const handsFreeDecorCost = data.hasHandFree && data.hasHandFreeDecor
+                                    ? PROVIDERS_FEES[PROVIDERS[provider]].handsFreeDecor
+                                    : 0
 
         if (PROVIDERS[provider] === 'Abatronic'){
-            alerts.push('Abatronic incluye el portero manos libres en su presupuesto.')
+            alerts.push('Abatronic incluye el portero manos libres en su presupuesto (con marco).')
         }
 
         if (keys > 0) { // someone wants a proximity door opener!
@@ -86,10 +91,11 @@ export class VideoPorteroContainer extends Component {
         else {
             totalCom = baseCost
         }
-        console.log("hellooooo", PROVIDERS[provider] === 'Abatronic' || data.hasHandFree)
+        
         this.setState({ alerts,
-                        extraPerNeighbour: iva(handsFreeCost+keysPrice), 
+                        extraPerNeighbour: iva(handsFreeCost+handsFreeDecorCost+keysPrice), 
                         isHandFreeChecked: PROVIDERS[provider] === 'Abatronic' || data.hasHandFree,
+                        isHandFreeDecorChecked: data.hasHandFree && data.hasHandFreeDecor || PROVIDERS[provider] === 'Abatronic',
                         keyNumber: (PROVIDERS[provider] === 'Emitek') && keys===1
                                     ? 2
                                     : keys,
@@ -107,6 +113,8 @@ export class VideoPorteroContainer extends Component {
                     alerts={this.state.alerts}
                     dataHandler={this._updateState}
                     handsFreeChecked = {this.state.isHandFreeChecked}
+                    handsFreeDecorChecked = { this.state.isHandFreeChecked && this.state.isHandFreeDecorChecked }
+                    showHandsFreeDecor = { this.state.isHandFreeChecked }
                     providers={PROVIDERS} 
                     totalCom = { this.state.totalCom }
                     extraNeig = {this.state.extraPerNeighbour}
