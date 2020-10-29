@@ -93,13 +93,14 @@ export class VideoPorteroContainer extends Component {
 
         this.setState({ alerts,
                         extraPerNeighbour: iva(handsFreeCost+keysPrice), 
-                        isHandsFreeIncluded: PROVIDERS[provider] === 'Abatronic',
+                        isHandsFreeIncluded: PROVIDERS[provider] === 'Abatronic' || data.hasHandFree,
                         keyNumber: (PROVIDERS[provider] === 'Emitek') && keys===1
                                     ? 2
                                     :keys,
                         totalCom: iva(totalCom), 
                         totalPerNeighbour: reparto(iva(totalCom+handsFreeCost)) 
                     })
+        console.log(this.state)
         
     }
 

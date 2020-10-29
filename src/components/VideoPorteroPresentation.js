@@ -10,7 +10,8 @@ export const VideoPorteroPresentation = (props) => {
                                     ? document.querySelector('input[name="providers-radio"]:checked').value.replace('choice-','')
                                     : null
 
-        const hasHandFree = document.querySelector('input[name="freeHands"]').checked
+        const hasHandFree = document.querySelector('input[name="freeHands"]').checked 
+                            && !document.querySelector('input[name="freeHands"]').disabled
         const keyNumber = document.querySelector('input[name="keys"]').value || 0
 
         const data = { 
@@ -48,7 +49,7 @@ export const VideoPorteroPresentation = (props) => {
                 </fieldset> 
                 <fieldset className="field">
                     <input checked={props.handsFreeChecked} 
-                            disabled={props.handsFreeChecked}name="freeHands" 
+                            name="freeHands" 
                             onChange={ handleSubmission } 
                             type="checkbox" />
                     <label htmlFor="freeHands">Manos libres</label>
