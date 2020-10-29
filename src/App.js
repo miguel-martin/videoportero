@@ -13,7 +13,7 @@ function App() {
           </h2>
         </div>
       </section>
-      <section className="section">
+      <section className="section" style={{marginTop: '0', paddingTop: '0'}}>
         <VideoPorteroContainer />
       </section>
     </div>
