@@ -31,12 +31,14 @@ const PROVIDERS = Object.keys(PROVIDERS_FEES)
 
 
 export class VideoPorteroContainer extends Component {
+
     state = {
+        keyNumber: 0,
         totalCom: 0,
         extraPerNeighbour: 0,
-        totalPerNeighbour: 0
+        totalPerNeighbour: 0,
+        alerts: []
     }
-
 
     _updateState = (data) => {
         const provider = parseInt(data.provider)
@@ -55,29 +57,38 @@ export class VideoPorteroContainer extends Component {
 
         let keys = parseInt(data.keyNumber) || 0
         
-        let totalCom, keysPrice = 0
+        let alerts = [], totalCom, keysPrice = 0
 
-        if (keys > 0) { // someone ones a proximity door opener!
-            totalCom = baseCost + handsFreeCost + PROVIDERS_FEES[PROVIDERS[provider]].proximity
-            if (PROVIDERS[provider] !== 'Emitek')
-                    keysPrice = PROVIDERS_FEES[PROVIDERS[provider]].key * keys
+        if (keys > 0) { // someone wants a proximity door opener!
+            totalCom = baseCost + PROVIDERS_FEES[PROVIDERS[provider]].proximity
+            if (PROVIDERS[provider] !== 'Emitek'){
+                keysPrice = PROVIDERS_FEES[PROVIDERS[provider]].key * keys
+                
+            }
+                    
             else { // emitek includes 2 proximity keys for free
                     keysPrice = keys > 2 
                                 ? (keys - 2)*PROVIDERS_FEES[PROVIDERS[provider]].key
                                 : 0
+                    alerts.push('La empresa Emitek incluye 2 llaveros por vecino en caso de instalar el servicio de proximidad.')
             }
         }
         else {
-            totalCom = baseCost + handsFreeCost
+            totalCom = baseCost
         }
 
         console.log(`Precio base (sin iva): ${totalCom}`)
         console.log(`Precio manos libres (sin iva): ${handsFreeCost}`)
         console.log(`Precio de las llaves (sin iva): ${keysPrice}`)
 
-        this.setState({ totalCom: iva(totalCom), 
+        this.setState({ alerts,
                         extraPerNeighbour: iva(handsFreeCost+keysPrice), 
-                        totalPerNeighbour: reparto(iva(totalCom+handsFreeCost)) })
+                        keyNumber: (PROVIDERS[provider] === 'Emitek') && keys===1
+                                    ? 2
+                                    :keys,
+                        totalCom: iva(totalCom), 
+                        totalPerNeighbour: reparto(iva(totalCom+handsFreeCost)) 
+                    })
         
     }
 
@@ -85,11 +96,13 @@ export class VideoPorteroContainer extends Component {
         return(
             <div>
                 <VideoPorteroPresentation 
+                    alerts={this.state.alerts}
                     dataHandler={this._updateState}
                     providers={PROVIDERS} 
                     totalCom = { this.state.totalCom }
                     extraNeig = {this.state.extraPerNeighbour}
-                    totalNeig = {this.state.totalPerNeighbour} />
+                    totalNeig = {this.state.totalPerNeighbour} 
+                    keyNumber = {this.state.keyNumber} />
             </div>
         )
     }

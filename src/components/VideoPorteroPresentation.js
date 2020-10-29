@@ -38,7 +38,7 @@ export const VideoPorteroPresentation = (props) => {
     })
 
     const showPrices = props.totalCom > 0
-    console.log(props)
+    console.log(props) // dev
     return (
         <div id="wrapper">
             <form id="videoportero" className="form">
@@ -52,7 +52,7 @@ export const VideoPorteroPresentation = (props) => {
                     <p className="flex-basis-100 help">¿Desea versión manos libres?</p>
                 </fieldset>
                 <fieldset className="field">
-                    <input id="keys" name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" />
+                    <input id="keys" name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" value={props.keyNumber}/>
                     <label htmlFor="keys" >Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
@@ -84,8 +84,18 @@ export const VideoPorteroPresentation = (props) => {
                         <span className="text-1">Su total</span>
                     </div>
                 </div>
-                
             </span>
+            <article className="message is-warning is-light" style={{ display: props.alerts.length ? 'block': 'none'}}>
+                <div className="message-header">
+                    <p>Avisos</p>
+                </div>
+                <div className="message-body">
+                    {
+                        props.alerts.map((m,i) => (<p key={i} className="alert">{m}</p>))
+                    }
+                </div>
+            </article>
         </div>
+        
     )
 }
