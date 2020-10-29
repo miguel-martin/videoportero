@@ -47,7 +47,10 @@ export const VideoPorteroPresentation = (props) => {
                         <div className="help flex-basis-100">Elija un proveedor de la lista superior</div>
                 </fieldset> 
                 <fieldset className="field">
-                    <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
+                    <input checked={props.handsFreeChecked} 
+                            disabled={props.handsFreeChecked}name="freeHands" 
+                            onChange={ handleSubmission } 
+                            type="checkbox" />
                     <label htmlFor="freeHands">Manos libres</label>
                     <p className="flex-basis-100 help">¿Desea versión manos libres?</p>
                 </fieldset>
