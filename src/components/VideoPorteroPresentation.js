@@ -11,10 +11,8 @@ export const VideoPorteroPresentation = (props) => {
                                     : null
 
         const hasHandFree = document.querySelector('input[name="freeHands"]').checked
-        const keyNumber = document.querySelector('input[name="keys"]').value
-        //console.log(`You selected ${selectedProvider}`)
-        //console.log(hasHandFree)
-        //console.log(keyNumber)
+        const keyNumber = document.querySelector('input[name="keys"]').value || 0
+
         const data = { 
             hasHandFree,
             keyNumber,
@@ -26,7 +24,7 @@ export const VideoPorteroPresentation = (props) => {
 
     const Providers = props.providers.map((provider, index) => {
         return (
-            <div className="provider">
+            <div className="provider" key={`choice-${index}`}>
                 <input  id={`choice-${index}`} 
                         name="providers-radio" 
                         onChange={ handleSubmission }

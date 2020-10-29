@@ -42,8 +42,19 @@ export class VideoPorteroContainer extends Component {
         const provider = parseInt(data.provider)
         const baseCost = PROVIDERS_FEES[PROVIDERS[provider]].basePrice
         const handsFreeCost = data.hasHandFree ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree : 0
-        const proximityCost = data.keyNumber ? data.keyNumber * PROVIDERS_FEES[PROVIDERS[provider]].key : 0
-        console.log(`Provider ${PROVIDERS[provider]}. Base cost: ${baseCost}. handsFreeCost: ${handsFreeCost}. proximityCost: ${proximityCost}`)
+        let keys = 0
+        try {
+            keys = (PROVIDERS[provider] === 'Emitek') && (parseInt(data.keyNumber) === 1) // same price with 1 or 2 keys!
+                     ? 2
+                     : parseInt(data.keyNumber)
+        }
+        catch {
+            console.error("Number of keys not set!")
+            keys = 0
+        }
+        
+        const proximityCost = keys * PROVIDERS_FEES[PROVIDERS[provider]].key
+        console.log(`Provider ${PROVIDERS[provider]}. Base cost: ${baseCost}. handsFreeCost: ${handsFreeCost}. proximityCost: ${proximityCost}. keys=${keys}`)
         const proximityExtraCost = proximityCost > 0 ? PROVIDERS_FEES[PROVIDERS[provider]].proximity : 0
         const total = reparto(iva(baseCost)) + iva(handsFreeCost) + iva(proximityCost) + reparto(iva(proximityExtraCost))
 
