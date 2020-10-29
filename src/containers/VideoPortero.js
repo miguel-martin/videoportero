@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { VideoPorteroPresentation } from '../components/VideoPorteroPresentation'
 
 const NEIGHBOURS = 18
+const iva = (n) => (n*1.21) 
+const reparto = (n) => (n/NEIGHBOURS)
 
 const PROVIDERS_FEES = {
     DatesSL: {
@@ -18,47 +20,64 @@ const PROVIDERS_FEES = {
     },
     Emitek: {
             basePrice: 2830.5,
-            proximity: 0,
-            key: 4.1322,
+            proximity: 180,
+            key: 7.5,
             handsFree: 28.93,
     },
 }
 
 const PROVIDERS = Object.keys(PROVIDERS_FEES)
 
-const iva = (n) => (n*1.21) 
-const reparto = (n) => (n/NEIGHBOURS)
+
 
 export class VideoPorteroContainer extends Component {
     state = {
-        //keys: 0,            //  number of proximity keys
-        //provider: null,       
-        //proximity: false,
-        total: 0,
+        totalCom: 0,
+        extraPerNeighbour: 0,
+        totalPerNeighbour: 0
     }
 
 
     _updateState = (data) => {
         const provider = parseInt(data.provider)
-        const baseCost = PROVIDERS_FEES[PROVIDERS[provider]].basePrice
-        const handsFreeCost = data.hasHandFree ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree : 0
-        let keys = 0
-        try {
-            keys = (PROVIDERS[provider] === 'Emitek') && (parseInt(data.keyNumber) === 1) // same price with 1 or 2 keys!
-                     ? 2
-                     : parseInt(data.keyNumber)
+        if (isNaN(provider)){
+            //console.error('Select provider!')
+            return
         }
-        catch {
-            console.error("Number of keys not set!")
-            keys = 0
+        if (provider < 0 || provider > Object.keys(PROVIDERS_FEES).length){
+            //console.error('Invalid option!')
+            return
         }
-        
-        const proximityCost = keys * PROVIDERS_FEES[PROVIDERS[provider]].key
-        console.log(`Provider ${PROVIDERS[provider]}. Base cost: ${baseCost}. handsFreeCost: ${handsFreeCost}. proximityCost: ${proximityCost}. keys=${keys}`)
-        const proximityExtraCost = proximityCost > 0 ? PROVIDERS_FEES[PROVIDERS[provider]].proximity : 0
-        const total = reparto(iva(baseCost)) + iva(handsFreeCost) + iva(proximityCost) + reparto(iva(proximityExtraCost))
 
-        this.setState({ total })
+        const baseCost = PROVIDERS_FEES[PROVIDERS[provider]].basePrice
+
+        const handsFreeCost = data.hasHandFree ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree : 0
+
+        let keys = parseInt(data.keyNumber) || 0
+        
+        let totalCom, keysPrice = 0
+
+        if (keys > 0) { // someone ones a proximity door opener!
+            totalCom = baseCost + handsFreeCost + PROVIDERS_FEES[PROVIDERS[provider]].proximity
+            if (PROVIDERS[provider] !== 'Emitek')
+                    keysPrice = PROVIDERS_FEES[PROVIDERS[provider]].key * keys
+            else { // emitek includes 2 proximity keys for free
+                    keysPrice = keys > 2 
+                                ? (keys - 2)*PROVIDERS_FEES[PROVIDERS[provider]].key
+                                : 0
+            }
+        }
+        else {
+            totalCom = baseCost + handsFreeCost
+        }
+
+        console.log(`Precio base (sin iva): ${totalCom}`)
+        console.log(`Precio manos libres (sin iva): ${handsFreeCost}`)
+        console.log(`Precio de las llaves (sin iva): ${keysPrice}`)
+
+        this.setState({ totalCom: iva(totalCom), 
+                        extraPerNeighbour: iva(handsFreeCost+keysPrice), 
+                        totalPerNeighbour: reparto(iva(totalCom+handsFreeCost)) })
         
     }
 
@@ -68,7 +87,9 @@ export class VideoPorteroContainer extends Component {
                 <VideoPorteroPresentation 
                     dataHandler={this._updateState}
                     providers={PROVIDERS} 
-                    total = { this.state.total }/>
+                    totalCom = { this.state.totalCom }
+                    extraNeig = {this.state.extraPerNeighbour}
+                    totalNeig = {this.state.totalPerNeighbour} />
             </div>
         )
     }

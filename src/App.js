@@ -9,7 +9,7 @@ function App() {
         <div className="container">
           <h1 className="title">Elección de videoportero</h1>
           <h2 className="subtitle">
-            Rellene sus preferencias y calcule el importe.
+            Elija proveedor y opciones deseadas.
           </h2>
         </div>
       </section>

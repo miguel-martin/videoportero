@@ -37,30 +37,54 @@ export const VideoPorteroPresentation = (props) => {
         )
     })
 
+    const showPrices = props.totalCom > 0
+    console.log(props)
     return (
         <div id="wrapper">
             <form id="videoportero" className="form">
                 <fieldset className="field providers">
                         {Providers}
+                        <div className="help flex-basis-100">Elija un proveedor de la lista superior</div>
                 </fieldset> 
                 <fieldset className="field">
                     <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
                     <label htmlFor="freeHands">Manos libres</label>
-                    <p className="help">¿Desea versión manos libres?</p>
+                    <p className="flex-basis-100 help">¿Desea versión manos libres?</p>
                 </fieldset>
                 <fieldset className="field">
-                    <input name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" />
+                    <input id="keys" name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" />
                     <label htmlFor="keys" >Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
             </form>
-            <span className={`message notification is-light ${props.total === 0 ? 'is-warning' : 'is-success'}`}>
-                { props.total === 0
-                        ? 'Seleccione sus preferencias para calcular importe'
-                        : 'Coste de su elección'
-                }
-                <br />
-                <span className="cost" style={{display: props.total === 0 ? 'none' : 'block'}}>{props.total.toFixed(2)} €</span>
+            <span className={`message notification is-light ${showPrices ? 'is-success' : 'is-warning'}`}>
+                <h3 className="text-3">
+                    { showPrices
+                            ? 'Coste de su elección (IVA incluído)'
+                            : 'Seleccione sus preferencias para calcular importe'
+                    }
+                </h3>
+                <div className="cost-container" style={{display: showPrices ? 'flex' : 'none'}}>   
+                    <div id="total-comunidad" className="cost" >
+                        <span className="text-2">
+                            {props.totalCom.toFixed(2)} €
+                        </span>
+                        <span className="text-1">Coste Comunidad</span>
+                    </div>
+                    <div id="extraVecino" className="cost">
+                        <span className="text-2">
+                            {props.extraNeig.toFixed(2)} €
+                        </span>
+                        <span className="text-1">Sus extras</span>
+                    </div>
+                    <div id="totalVecino" className="cost">
+                        <span className="text-2">
+                            {props.totalNeig.toFixed(2)} €
+                        </span>
+                        <span className="text-1">Su total</span>
+                    </div>
+                </div>
+                
             </span>
         </div>
     )
