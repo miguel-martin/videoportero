@@ -48,7 +48,7 @@ export const VideoPorteroPresentation = (props) => {
                 <fieldset className="field">
                     <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
                     <label htmlFor="freeHands">Manos libres</label>
-                    <p className="help">¿Desea la versión manos libres?</p>
+                    <p className="help">¿Desea versión manos libres?</p>
                 </fieldset>
                 <fieldset className="field">
                     <input name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" />
@@ -59,8 +59,10 @@ export const VideoPorteroPresentation = (props) => {
             <span className={`message notification is-light ${props.total === 0 ? 'is-warning' : 'is-success'}`}>
                 { props.total === 0
                         ? 'Seleccione sus preferencias para calcular importe'
-                        : `Coste de su elección: ${props.total} €.`
+                        : 'Coste de su elección'
                 }
+                <br />
+                <span className="cost" style={{display: props.total === 0 ? 'none' : 'block'}}>{props.total.toFixed(2)} €</span>
             </span>
         </div>
     )

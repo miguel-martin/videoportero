@@ -23,4 +23,12 @@ fieldset {
 
 .provider { margin-right: 2rem; }
 
-.message { margin-top: 2rem; }
+.message { 
+  margin-top: 4rem; 
+  width: 100%;
+  display: inline-block;
+}
+
+.cost {
+  font-size: 2rem;
+}

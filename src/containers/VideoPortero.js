@@ -48,23 +48,6 @@ export class VideoPorteroContainer extends Component {
         const total = reparto(iva(baseCost)) + iva(handsFreeCost) + iva(proximityCost) + reparto(iva(proximityExtraCost))
 
         this.setState({ total })
-/*
-        switch(provider){
-
-            case 0: // Dates SL
-                const freeHandsTotal = reparto(iva())
-                this.setState({ total: reparto(iva(2835)) })
-                break;
-            case 1: // Abatronic
-                this.setState({ total: reparto(iva(2477.5)) })
-                break
-            case 2: // Emitek
-                this.setState({ total: reparto(iva(2830)) })
-                break
-            default:
-                this.setState({ total: 0 })
-        }
-        */
         
     }
 
