@@ -39,19 +39,20 @@ export class VideoPorteroContainer extends Component {
 
 
     _updateState = (data) => {
-        const provider = data.provider
-        // console.log("Selected provider: ", PROVIDERS[provider])
-        this.setState( { provider: PROVIDERS[provider] })
+        const provider = parseInt(data.provider)
+        const baseCost = PROVIDERS_FEES[PROVIDERS[provider]].basePrice
+        const handsFreeCost = data.hasHandFree ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree : 0
+        const proximityCost = data.keyNumber ? data.keyNumber * PROVIDERS_FEES[PROVIDERS[provider]].key : 0
+        console.log(`Provider ${PROVIDERS[provider]}. Base cost: ${baseCost}. handsFreeCost: ${handsFreeCost}. proximityCost: ${proximityCost}`)
+        const proximityExtraCost = proximityCost > 0 ? PROVIDERS_FEES[PROVIDERS[provider]].proximity : 0
+        const total = reparto(iva(baseCost)) + iva(handsFreeCost) + iva(proximityCost) + reparto(iva(proximityExtraCost))
 
-        // CASES
-        // Dates SL
-        // Dates SL + proximidad
-        // Dates SL + proximidad + 2 llaves...
-        // Dates SL + proximidad + 3 llaves...
-        // Dates SL + manos libres 
+        this.setState({ total })
+/*
+        switch(provider){
 
-        switch(parseInt(provider)){
             case 0: // Dates SL
+                const freeHandsTotal = reparto(iva())
                 this.setState({ total: reparto(iva(2835)) })
                 break;
             case 1: // Abatronic
@@ -63,6 +64,7 @@ export class VideoPorteroContainer extends Component {
             default:
                 this.setState({ total: 0 })
         }
+        */
         
     }
 

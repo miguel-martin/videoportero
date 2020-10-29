@@ -26,33 +26,24 @@ export const VideoPorteroPresentation = (props) => {
 
     const Providers = props.providers.map((provider, index) => {
         return (
-            <div className="provider" key={`provider-${index}`}>
-                <div className="control">
-                    <input  className="input"
-                            id={`choice-${index}`} 
-                            name="providers-radio" 
-                            onChange={ handleSubmission }
-                            type="radio" 
-                            value={`choice-${index}`}/>
-                </div>
-                <label htmlFor={`choice-${index}`}>{provider}</label>
-            </div>   
+            <div className="provider">
+                <label className="radio provider" key={`choice-${index}`} htmlFor={`choice-${index}`}>
+                        {provider}
+                </label> 
+                <input  id={`choice-${index}`} 
+                        name="providers-radio" 
+                        onChange={ handleSubmission }
+                        type="radio" 
+                        value={`choice-${index}`}/>
+            </div>
         )
     })
 
     return (
         <div id="wrapper">
-
             <form id="videoportero" className="form">
-                <fieldset className="field">
-                    <label className="label">Name</label>
-                    <div className="control">
-                        <input className="input" type="text" placeholder="Text input" />
-                    </div>
-                </fieldset>
-
                 <fieldset className="field providers">
-                    {Providers}
+                        {Providers}
                 </fieldset>
                 <fieldset className="field">
                     <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
@@ -60,15 +51,15 @@ export const VideoPorteroPresentation = (props) => {
                     <p className="help">¿Desea la versión manos libres?</p>
                 </fieldset>
                 <fieldset className="field">
-                    <input name="keys" type="text" onChange={ handleSubmission } />
-                    <label htmlFor="keys">Llaves de proximidad</label>
+                    <input name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" />
+                    <label htmlFor="keys" >Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
             </form>
-            <span className="message">
+            <span className={`message notification is-light ${props.total === 0 ? 'is-warning' : 'is-success'}`}>
                 { props.total === 0
                         ? 'Seleccione sus preferencias para calcular importe'
-                        : `Coste de su elección: ${props.total} euros por vecino.`
+                        : `Coste de su elección: ${props.total} €.`
                 }
             </span>
         </div>
