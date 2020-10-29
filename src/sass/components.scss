@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-size: 1.2rem;
 }
 
 label { 
@@ -21,7 +22,20 @@ fieldset {
   align-items: center;
 }
 
+
 .provider { margin-right: 2rem; }
+
+
+@media only screen and (max-width: 400px){
+  .providers{
+    flex-direction: column;
+  } 
+
+  .provider {
+    margin-right: 0;
+    width: 60%;
+  }
+}
 
 .message { 
   margin-top: 4rem; 

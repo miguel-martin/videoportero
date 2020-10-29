@@ -27,14 +27,14 @@ export const VideoPorteroPresentation = (props) => {
     const Providers = props.providers.map((provider, index) => {
         return (
             <div className="provider">
-                <label className="radio provider" key={`choice-${index}`} htmlFor={`choice-${index}`}>
-                        {provider}
-                </label> 
                 <input  id={`choice-${index}`} 
                         name="providers-radio" 
                         onChange={ handleSubmission }
                         type="radio" 
                         value={`choice-${index}`}/>
+                <label className="radio provider" key={`choice-${index}`} htmlFor={`choice-${index}`}>
+                        {provider}
+                </label> 
             </div>
         )
     })
@@ -44,7 +44,7 @@ export const VideoPorteroPresentation = (props) => {
             <form id="videoportero" className="form">
                 <fieldset className="field providers">
                         {Providers}
-                </fieldset>
+                </fieldset> 
                 <fieldset className="field">
                     <input name="freeHands" type="checkbox" onChange={ handleSubmission } />
                     <label htmlFor="freeHands">Manos libres</label>
