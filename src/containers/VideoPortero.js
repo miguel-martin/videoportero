@@ -45,6 +45,7 @@ export class VideoPorteroContainer extends Component {
     }
 
     _updateState = (data) => {
+        console.log("Received data...",data)
         const provider = parseInt(data.provider)
         let keys = parseInt(data.keyNumber) || 0,
             alerts = [], 
@@ -54,9 +55,10 @@ export class VideoPorteroContainer extends Component {
         if (isNaN(provider) || provider < 0 || provider > Object.keys(PROVIDERS_FEES).length){
             console.error('Invalid provider, or provider not selected!')
             this.setState({
-                isHandsFreeChecked: data.hasHandFree,
-                keyNumber: data.keyNumber
+                isHandFreeChecked: data.hasHandFree,
+                keyNumber: keys
             })
+            console.log(this.state)
             return
         }
 
@@ -64,8 +66,6 @@ export class VideoPorteroContainer extends Component {
         const handsFreeCost = data.hasHandFree 
                                 ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree 
                                 : 0
-
-        
 
         if (PROVIDERS[provider] === 'Abatronic'){
             alerts.push('Abatronic incluye el portero manos libres en su presupuesto.')

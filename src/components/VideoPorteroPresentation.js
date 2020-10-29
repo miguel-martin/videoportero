@@ -58,7 +58,13 @@ export const VideoPorteroPresentation = (props) => {
                     <p className="flex-basis-100 help">¿Desea versión manos libres?</p>
                 </fieldset>
                 <fieldset className="field">
-                    <input id="keys" name="keys" type="text" onChange={ handleSubmission } size="1" maxLength="1" value={props.keyNumber}/>
+                    <input id="keys" 
+                            name="keys" 
+                            type="text" 
+                            onChange={ handleSubmission } 
+                            size="1" 
+                            maxLength="1" 
+                            value={props.keyNumber}/>
                     <label htmlFor="keys" >Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
