@@ -6,12 +6,13 @@ import React from 'react'
 export const VideoPorteroPresentation = (props) => {
 
     const handleSubmission = (e) => {
+        console.log('handling submission...')
         const provider = document.querySelector('input[name="providers-radio"]:checked')
                                     ? document.querySelector('input[name="providers-radio"]:checked').value.replace('choice-','')
                                     : null
 
         const hasHandFree = document.querySelector('input[name="freeHands"]').checked 
-                            && !document.querySelector('input[name="freeHands"]').disabled
+                            
         const keyNumber = document.querySelector('input[name="keys"]').value || 0
 
         const data = { 
@@ -19,6 +20,7 @@ export const VideoPorteroPresentation = (props) => {
             keyNumber,
             provider
         }
+        console.log("data...",data)
 
         props.dataHandler(data)
     }

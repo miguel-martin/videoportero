@@ -37,7 +37,7 @@ export class VideoPorteroContainer extends Component {
 
     state = {
         keyNumber: 0,
-        isHandsFreeIncluded: false,
+        isHandFreeChecked: false,
         totalCom: 0,
         extraPerNeighbour: 0,
         totalPerNeighbour: 0,
@@ -46,24 +46,26 @@ export class VideoPorteroContainer extends Component {
 
     _updateState = (data) => {
         const provider = parseInt(data.provider)
-        if (isNaN(provider)){
-            //console.error('Select provider!')
-            return
-        }
-        if (provider < 0 || provider > Object.keys(PROVIDERS_FEES).length){
-            //console.error('Invalid option!')
+        let keys = parseInt(data.keyNumber) || 0,
+            alerts = [], 
+            keysPrice = 0,
+            totalCom
+
+        if (isNaN(provider) || provider < 0 || provider > Object.keys(PROVIDERS_FEES).length){
+            console.error('Invalid provider, or provider not selected!')
+            this.setState({
+                isHandsFreeChecked: data.hasHandFree,
+                keyNumber: data.keyNumber
+            })
             return
         }
 
         const baseCost = PROVIDERS_FEES[PROVIDERS[provider]].basePrice
-
         const handsFreeCost = data.hasHandFree 
                                 ? PROVIDERS_FEES[PROVIDERS[provider]].handsFree 
                                 : 0
 
-        let keys = parseInt(data.keyNumber) || 0
         
-        let alerts = [], totalCom, keysPrice = 0
 
         if (PROVIDERS[provider] === 'Abatronic'){
             alerts.push('Abatronic incluye el portero manos libres en su presupuesto.')
@@ -73,9 +75,7 @@ export class VideoPorteroContainer extends Component {
             totalCom = baseCost + PROVIDERS_FEES[PROVIDERS[provider]].proximity
             if (PROVIDERS[provider] !== 'Emitek'){
                 keysPrice = PROVIDERS_FEES[PROVIDERS[provider]].key * keys
-                
-            }
-                    
+            }       
             else { // emitek includes 2 proximity keys for free
                     keysPrice = keys > 2 
                                 ? (keys - 2)*PROVIDERS_FEES[PROVIDERS[provider]].key
@@ -86,17 +86,13 @@ export class VideoPorteroContainer extends Component {
         else {
             totalCom = baseCost
         }
-
-        console.log(`Precio base (sin iva): ${totalCom}`)
-        console.log(`Precio manos libres (sin iva): ${handsFreeCost}`)
-        console.log(`Precio de las llaves (sin iva): ${keysPrice}`)
-
+        console.log("hellooooo", PROVIDERS[provider] === 'Abatronic' || data.hasHandFree)
         this.setState({ alerts,
                         extraPerNeighbour: iva(handsFreeCost+keysPrice), 
-                        isHandsFreeIncluded: PROVIDERS[provider] === 'Abatronic' || data.hasHandFree,
+                        isHandFreeChecked: PROVIDERS[provider] === 'Abatronic' || data.hasHandFree,
                         keyNumber: (PROVIDERS[provider] === 'Emitek') && keys===1
                                     ? 2
-                                    :keys,
+                                    : keys,
                         totalCom: iva(totalCom), 
                         totalPerNeighbour: reparto(iva(totalCom+handsFreeCost)) 
                     })
@@ -110,7 +106,7 @@ export class VideoPorteroContainer extends Component {
                 <VideoPorteroPresentation 
                     alerts={this.state.alerts}
                     dataHandler={this._updateState}
-                    handsFreeChecked = {this.state.isHandsFreeIncluded}
+                    handsFreeChecked = {this.state.isHandFreeChecked}
                     providers={PROVIDERS} 
                     totalCom = { this.state.totalCom }
                     extraNeig = {this.state.extraPerNeighbour}
