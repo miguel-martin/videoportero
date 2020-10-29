@@ -13,7 +13,7 @@ export const VideoPorteroPresentation = (props) => {
 
         const hasHandFree = document.querySelector('input[name="freeHands"]').checked 
                             
-        const keyNumber = document.querySelector('input[name="keys"]').value || 0
+        const keyNumber = document.querySelector('input[name="keys"]').value
 
         const data = { 
             hasHandFree,
@@ -64,8 +64,8 @@ export const VideoPorteroPresentation = (props) => {
                             onChange={ handleSubmission } 
                             size="1" 
                             maxLength="1" 
-                            value={props.keyNumber}/>
-                    <label htmlFor="keys" >Llaves de proximidad</label>
+                            value={ !isNaN(props.keyNumber) ? props.keyNumber : ''}/>
+                    <label htmlFor="keys">Llaves de proximidad</label>
                     <p className="help">¿Cuántas llaves de proximidad desea para su domicilio?</p>
                 </fieldset>
             </form>

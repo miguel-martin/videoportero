@@ -47,7 +47,7 @@ export class VideoPorteroContainer extends Component {
     _updateState = (data) => {
         console.log("Received data...",data)
         const provider = parseInt(data.provider)
-        let keys = parseInt(data.keyNumber) || 0,
+        let keys = parseInt(data.keyNumber),
             alerts = [], 
             keysPrice = 0,
             totalCom
